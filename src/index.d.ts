@@ -6,6 +6,18 @@ declare namespace kikyoUtils {
 	 * @returns number类型
 	 */
 	export function random(min: number, max: number): number
+
+	/**
+	 * 加密数据
+	 * @param data - 数据
+	 */
+	export function encrypto(data: any): string
+
+	/**
+	 * 解密数据
+	 * @param cipherText - 密文
+	 */
+	export function decrypto(cipherText: string): any
 }
 
 declare module 'kikyo-utils' {
