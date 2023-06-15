@@ -1,5 +1,57 @@
 'use strict';
 
+// 获取浏览器及版本信息
+function getBrowser() {
+    var ua = navigator.userAgent.toLowerCase();
+    var isEdge = ua.match(/edge\([\d\.]+/);
+    var isIe = ua.match(/msie\s([\d\.]+)/) || ua.match(/trident\/[\d](?=[^\?]+).*rv:([0-9.].)/);
+    var isFireFox = ua.match(/firefox\/([\d\.]+)/);
+    var isOpera = ua.match(/opera.([\d\.]+)/);
+    var isChrome = ua.match(/chrome\/([\d\.]+)/) || ua.match(/crios\/([\d\.]+)/);
+    var isSafari = ua.match(/version\/([\d\.]+).*safari/);
+    var browser = isEdge || isIe || isFireFox || isOpera || isChrome || isSafari;
+    return browser;
+}
+
+var r$1={grad:.9,turn:360,rad:360/(2*Math.PI)},t$1=function(r){return "string"==typeof r?r.length>0:"number"==typeof r},n$1=function(r,t,n){return void 0===t&&(t=0),void 0===n&&(n=Math.pow(10,t)),Math.round(n*r)/n+0},e$1=function(r,t,n){return void 0===t&&(t=0),void 0===n&&(n=1),r>n?n:r>t?r:t},u$1=function(r){return (r=isFinite(r)?r%360:0)>0?r:r+360},a$1=function(r){return {r:e$1(r.r,0,255),g:e$1(r.g,0,255),b:e$1(r.b,0,255),a:e$1(r.a)}},o$1=function(r){return {r:n$1(r.r),g:n$1(r.g),b:n$1(r.b),a:n$1(r.a,3)}},i$1=/^#([0-9a-f]{3,8})$/i,s=function(r){var t=r.toString(16);return t.length<2?"0"+t:t},h$1=function(r){var t=r.r,n=r.g,e=r.b,u=r.a,a=Math.max(t,n,e),o=a-Math.min(t,n,e),i=o?a===t?(n-e)/o:a===n?2+(e-t)/o:4+(t-n)/o:0;return {h:60*(i<0?i+6:i),s:a?o/a*100:0,v:a/255*100,a:u}},b=function(r){var t=r.h,n=r.s,e=r.v,u=r.a;t=t/360*6,n/=100,e/=100;var a=Math.floor(t),o=e*(1-n),i=e*(1-(t-a)*n),s=e*(1-(1-t+a)*n),h=a%6;return {r:255*[e,i,o,o,s,e][h],g:255*[s,e,e,i,o,o][h],b:255*[o,o,s,e,e,i][h],a:u}},g=function(r){return {h:u$1(r.h),s:e$1(r.s,0,100),l:e$1(r.l,0,100),a:e$1(r.a)}},d=function(r){return {h:n$1(r.h),s:n$1(r.s),l:n$1(r.l),a:n$1(r.a,3)}},f$1=function(r){return b((n=(t=r).s,{h:t.h,s:(n*=((e=t.l)<50?e:100-e)/100)>0?2*n/(e+n)*100:0,v:e+n,a:t.a}));var t,n,e;},c$1=function(r){return {h:(t=h$1(r)).h,s:(u=(200-(n=t.s))*(e=t.v)/100)>0&&u<200?n*e/100/(u<=100?u:200-u)*100:0,l:u/2,a:t.a};var t,n,e,u;},l=/^hsla?\(\s*([+-]?\d*\.?\d+)(deg|rad|grad|turn)?\s*,\s*([+-]?\d*\.?\d+)%\s*,\s*([+-]?\d*\.?\d+)%\s*(?:,\s*([+-]?\d*\.?\d+)(%)?\s*)?\)$/i,p$1=/^hsla?\(\s*([+-]?\d*\.?\d+)(deg|rad|grad|turn)?\s+([+-]?\d*\.?\d+)%\s+([+-]?\d*\.?\d+)%\s*(?:\/\s*([+-]?\d*\.?\d+)(%)?\s*)?\)$/i,v=/^rgba?\(\s*([+-]?\d*\.?\d+)(%)?\s*,\s*([+-]?\d*\.?\d+)(%)?\s*,\s*([+-]?\d*\.?\d+)(%)?\s*(?:,\s*([+-]?\d*\.?\d+)(%)?\s*)?\)$/i,m=/^rgba?\(\s*([+-]?\d*\.?\d+)(%)?\s+([+-]?\d*\.?\d+)(%)?\s+([+-]?\d*\.?\d+)(%)?\s*(?:\/\s*([+-]?\d*\.?\d+)(%)?\s*)?\)$/i,y={string:[[function(r){var t=i$1.exec(r);return t?(r=t[1]).length<=4?{r:parseInt(r[0]+r[0],16),g:parseInt(r[1]+r[1],16),b:parseInt(r[2]+r[2],16),a:4===r.length?n$1(parseInt(r[3]+r[3],16)/255,2):1}:6===r.length||8===r.length?{r:parseInt(r.substr(0,2),16),g:parseInt(r.substr(2,2),16),b:parseInt(r.substr(4,2),16),a:8===r.length?n$1(parseInt(r.substr(6,2),16)/255,2):1}:null:null},"hex"],[function(r){var t=v.exec(r)||m.exec(r);return t?t[2]!==t[4]||t[4]!==t[6]?null:a$1({r:Number(t[1])/(t[2]?100/255:1),g:Number(t[3])/(t[4]?100/255:1),b:Number(t[5])/(t[6]?100/255:1),a:void 0===t[7]?1:Number(t[7])/(t[8]?100:1)}):null},"rgb"],[function(t){var n=l.exec(t)||p$1.exec(t);if(!n)return null;var e,u,a=g({h:(e=n[1],u=n[2],void 0===u&&(u="deg"),Number(e)*(r$1[u]||1)),s:Number(n[3]),l:Number(n[4]),a:void 0===n[5]?1:Number(n[5])/(n[6]?100:1)});return f$1(a)},"hsl"]],object:[[function(r){var n=r.r,e=r.g,u=r.b,o=r.a,i=void 0===o?1:o;return t$1(n)&&t$1(e)&&t$1(u)?a$1({r:Number(n),g:Number(e),b:Number(u),a:Number(i)}):null},"rgb"],[function(r){var n=r.h,e=r.s,u=r.l,a=r.a,o=void 0===a?1:a;if(!t$1(n)||!t$1(e)||!t$1(u))return null;var i=g({h:Number(n),s:Number(e),l:Number(u),a:Number(o)});return f$1(i)},"hsl"],[function(r){var n=r.h,a=r.s,o=r.v,i=r.a,s=void 0===i?1:i;if(!t$1(n)||!t$1(a)||!t$1(o))return null;var h=function(r){return {h:u$1(r.h),s:e$1(r.s,0,100),v:e$1(r.v,0,100),a:e$1(r.a)}}({h:Number(n),s:Number(a),v:Number(o),a:Number(s)});return b(h)},"hsv"]]},N=function(r,t){for(var n=0;n<t.length;n++){var e=t[n][0](r);if(e)return [e,t[n][1]]}return [null,void 0]},x=function(r){return "string"==typeof r?N(r.trim(),y.string):"object"==typeof r&&null!==r?N(r,y.object):[null,void 0]},M=function(r,t){var n=c$1(r);return {h:n.h,s:e$1(n.s+100*t,0,100),l:n.l,a:n.a}},H=function(r){return (299*r.r+587*r.g+114*r.b)/1e3/255},$=function(r,t){var n=c$1(r);return {h:n.h,s:n.s,l:e$1(n.l+100*t,0,100),a:n.a}},j=function(){function r(r){this.parsed=x(r)[0],this.rgba=this.parsed||{r:0,g:0,b:0,a:1};}return r.prototype.isValid=function(){return null!==this.parsed},r.prototype.brightness=function(){return n$1(H(this.rgba),2)},r.prototype.isDark=function(){return H(this.rgba)<.5},r.prototype.isLight=function(){return H(this.rgba)>=.5},r.prototype.toHex=function(){return r=o$1(this.rgba),t=r.r,e=r.g,u=r.b,i=(a=r.a)<1?s(n$1(255*a)):"","#"+s(t)+s(e)+s(u)+i;var r,t,e,u,a,i;},r.prototype.toRgb=function(){return o$1(this.rgba)},r.prototype.toRgbString=function(){return r=o$1(this.rgba),t=r.r,n=r.g,e=r.b,(u=r.a)<1?"rgba("+t+", "+n+", "+e+", "+u+")":"rgb("+t+", "+n+", "+e+")";var r,t,n,e,u;},r.prototype.toHsl=function(){return d(c$1(this.rgba))},r.prototype.toHslString=function(){return r=d(c$1(this.rgba)),t=r.h,n=r.s,e=r.l,(u=r.a)<1?"hsla("+t+", "+n+"%, "+e+"%, "+u+")":"hsl("+t+", "+n+"%, "+e+"%)";var r,t,n,e,u;},r.prototype.toHsv=function(){return r=h$1(this.rgba),{h:n$1(r.h),s:n$1(r.s),v:n$1(r.v),a:n$1(r.a,3)};var r;},r.prototype.invert=function(){return w({r:255-(r=this.rgba).r,g:255-r.g,b:255-r.b,a:r.a});var r;},r.prototype.saturate=function(r){return void 0===r&&(r=.1),w(M(this.rgba,r))},r.prototype.desaturate=function(r){return void 0===r&&(r=.1),w(M(this.rgba,-r))},r.prototype.grayscale=function(){return w(M(this.rgba,-1))},r.prototype.lighten=function(r){return void 0===r&&(r=.1),w($(this.rgba,r))},r.prototype.darken=function(r){return void 0===r&&(r=.1),w($(this.rgba,-r))},r.prototype.rotate=function(r){return void 0===r&&(r=15),this.hue(this.hue()+r)},r.prototype.alpha=function(r){return "number"==typeof r?w({r:(t=this.rgba).r,g:t.g,b:t.b,a:r}):n$1(this.rgba.a,3);var t;},r.prototype.hue=function(r){var t=c$1(this.rgba);return "number"==typeof r?w({h:r,s:t.s,l:t.l,a:t.a}):n$1(t.h)},r.prototype.isEqual=function(r){return this.toHex()===w(r).toHex()},r}(),w=function(r){return r instanceof j?r:new j(r)},S=[],k=function(r){r.forEach(function(r){S.indexOf(r)<0&&(r(j,y),S.push(r));});};
+
+var t=function(t,a,n){return void 0===a&&(a=0),void 0===n&&(n=1),t>n?n:t>a?t:a},a=function(t){var a=t/255;return a<.04045?a/12.92:Math.pow((a+.055)/1.055,2.4)},n=function(t){return 255*(t>.0031308?1.055*Math.pow(t,1/2.4)-.055:12.92*t)},r=96.422,o=100,u=82.521,e=function(a){var r,o,u={x:.9555766*(r=a).x+-.0230393*r.y+.0631636*r.z,y:-.0282895*r.x+1.0099416*r.y+.0210077*r.z,z:.0122982*r.x+-.020483*r.y+1.3299098*r.z};return o={r:n(.032404542*u.x-.015371385*u.y-.004985314*u.z),g:n(-.00969266*u.x+.018760108*u.y+41556e-8*u.z),b:n(556434e-9*u.x-.002040259*u.y+.010572252*u.z),a:a.a},{r:t(o.r,0,255),g:t(o.g,0,255),b:t(o.b,0,255),a:t(o.a)}},i=function(n){var e=a(n.r),i=a(n.g),p=a(n.b);return function(a){return {x:t(a.x,0,r),y:t(a.y,0,o),z:t(a.z,0,u),a:t(a.a)}}(function(t){return {x:1.0478112*t.x+.0228866*t.y+-.050127*t.z,y:.0295424*t.x+.9904844*t.y+-.0170491*t.z,z:-.0092345*t.x+.0150436*t.y+.7521316*t.z,a:t.a}}({x:100*(.4124564*e+.3575761*i+.1804375*p),y:100*(.2126729*e+.7151522*i+.072175*p),z:100*(.0193339*e+.119192*i+.9503041*p),a:n.a}))},p=216/24389,h=24389/27,f=function(t){var a=i(t),n=a.x/r,e=a.y/o,f=a.z/u;return n=n>p?Math.cbrt(n):(h*n+16)/116,{l:116*(e=e>p?Math.cbrt(e):(h*e+16)/116)-16,a:500*(n-e),b:200*(e-(f=f>p?Math.cbrt(f):(h*f+16)/116)),alpha:a.a}},c=function(a,n,i){var c,y=f(a),x=f(n);return function(t){var a=(t.l+16)/116,n=t.a/500+a,i=a-t.b/200;return e({x:(Math.pow(n,3)>p?Math.pow(n,3):(116*n-16)/h)*r,y:(t.l>8?Math.pow((t.l+16)/116,3):t.l/h)*o,z:(Math.pow(i,3)>p?Math.pow(i,3):(116*i-16)/h)*u,a:t.alpha})}({l:t((c={l:y.l*(1-i)+x.l*i,a:y.a*(1-i)+x.a*i,b:y.b*(1-i)+x.b*i,alpha:y.alpha*(1-i)+x.alpha*i}).l,0,400),a:c.a,b:c.b,alpha:t(c.alpha)})};function mixPlugin(t){function a(t,a,n){void 0===n&&(n=5);for(var r=[],o=1/(n-1),u=0;u<=n-1;u++)r.push(t.mix(a,o*u));return r}t.prototype.mix=function(a,n){void 0===n&&(n=.5);var r=a instanceof t?a:new t(a),o=c(this.toRgb(),r.toRgb(),n);return new t(o)},t.prototype.tints=function(t){return a(this,"#fff",t)},t.prototype.shades=function(t){return a(this,"#000",t)},t.prototype.tones=function(t){return a(this,"#808080",t)};}
+
+function namesPlugin(e,f){var a={white:"#ffffff",bisque:"#ffe4c4",blue:"#0000ff",cadetblue:"#5f9ea0",chartreuse:"#7fff00",chocolate:"#d2691e",coral:"#ff7f50",antiquewhite:"#faebd7",aqua:"#00ffff",azure:"#f0ffff",whitesmoke:"#f5f5f5",papayawhip:"#ffefd5",plum:"#dda0dd",blanchedalmond:"#ffebcd",black:"#000000",gold:"#ffd700",goldenrod:"#daa520",gainsboro:"#dcdcdc",cornsilk:"#fff8dc",cornflowerblue:"#6495ed",burlywood:"#deb887",aquamarine:"#7fffd4",beige:"#f5f5dc",crimson:"#dc143c",cyan:"#00ffff",darkblue:"#00008b",darkcyan:"#008b8b",darkgoldenrod:"#b8860b",darkkhaki:"#bdb76b",darkgray:"#a9a9a9",darkgreen:"#006400",darkgrey:"#a9a9a9",peachpuff:"#ffdab9",darkmagenta:"#8b008b",darkred:"#8b0000",darkorchid:"#9932cc",darkorange:"#ff8c00",darkslateblue:"#483d8b",gray:"#808080",darkslategray:"#2f4f4f",darkslategrey:"#2f4f4f",deeppink:"#ff1493",deepskyblue:"#00bfff",wheat:"#f5deb3",firebrick:"#b22222",floralwhite:"#fffaf0",ghostwhite:"#f8f8ff",darkviolet:"#9400d3",magenta:"#ff00ff",green:"#008000",dodgerblue:"#1e90ff",grey:"#808080",honeydew:"#f0fff0",hotpink:"#ff69b4",blueviolet:"#8a2be2",forestgreen:"#228b22",lawngreen:"#7cfc00",indianred:"#cd5c5c",indigo:"#4b0082",fuchsia:"#ff00ff",brown:"#a52a2a",maroon:"#800000",mediumblue:"#0000cd",lightcoral:"#f08080",darkturquoise:"#00ced1",lightcyan:"#e0ffff",ivory:"#fffff0",lightyellow:"#ffffe0",lightsalmon:"#ffa07a",lightseagreen:"#20b2aa",linen:"#faf0e6",mediumaquamarine:"#66cdaa",lemonchiffon:"#fffacd",lime:"#00ff00",khaki:"#f0e68c",mediumseagreen:"#3cb371",limegreen:"#32cd32",mediumspringgreen:"#00fa9a",lightskyblue:"#87cefa",lightblue:"#add8e6",midnightblue:"#191970",lightpink:"#ffb6c1",mistyrose:"#ffe4e1",moccasin:"#ffe4b5",mintcream:"#f5fffa",lightslategray:"#778899",lightslategrey:"#778899",navajowhite:"#ffdead",navy:"#000080",mediumvioletred:"#c71585",powderblue:"#b0e0e6",palegoldenrod:"#eee8aa",oldlace:"#fdf5e6",paleturquoise:"#afeeee",mediumturquoise:"#48d1cc",mediumorchid:"#ba55d3",rebeccapurple:"#663399",lightsteelblue:"#b0c4de",mediumslateblue:"#7b68ee",thistle:"#d8bfd8",tan:"#d2b48c",orchid:"#da70d6",mediumpurple:"#9370db",purple:"#800080",pink:"#ffc0cb",skyblue:"#87ceeb",springgreen:"#00ff7f",palegreen:"#98fb98",red:"#ff0000",yellow:"#ffff00",slateblue:"#6a5acd",lavenderblush:"#fff0f5",peru:"#cd853f",palevioletred:"#db7093",violet:"#ee82ee",teal:"#008080",slategray:"#708090",slategrey:"#708090",aliceblue:"#f0f8ff",darkseagreen:"#8fbc8f",darkolivegreen:"#556b2f",greenyellow:"#adff2f",seagreen:"#2e8b57",seashell:"#fff5ee",tomato:"#ff6347",silver:"#c0c0c0",sienna:"#a0522d",lavender:"#e6e6fa",lightgreen:"#90ee90",orange:"#ffa500",orangered:"#ff4500",steelblue:"#4682b4",royalblue:"#4169e1",turquoise:"#40e0d0",yellowgreen:"#9acd32",salmon:"#fa8072",saddlebrown:"#8b4513",sandybrown:"#f4a460",rosybrown:"#bc8f8f",darksalmon:"#e9967a",lightgoldenrodyellow:"#fafad2",snow:"#fffafa",lightgrey:"#d3d3d3",lightgray:"#d3d3d3",dimgray:"#696969",dimgrey:"#696969",olivedrab:"#6b8e23",olive:"#808000"},r={};for(var d in a)r[a[d]]=d;var l={};e.prototype.toName=function(f){if(!(this.rgba.a||this.rgba.r||this.rgba.g||this.rgba.b))return "transparent";var d,i,n=r[this.toHex()];if(n)return n;if(null==f?void 0:f.closest){var o=this.toRgb(),t=1/0,b="black";if(!l.length)for(var c in a)l[c]=new e(a[c]).toRgb();for(var g in a){var u=(d=o,i=l[g],Math.pow(d.r-i.r,2)+Math.pow(d.g-i.g,2)+Math.pow(d.b-i.b,2));u<t&&(t=u,b=g);}return b}};f.string.push([function(f){var r=f.toLowerCase(),d="transparent"===r?"#0000":a[r];return d?new e(d).toRgb():null},"name"]);}
+
+k([namesPlugin, mixPlugin]);
+/**
+ * 给颜色加透明度
+ * @param color - 颜色
+ * @param alpha - 透明度 (0 - 1)
+ */
+function addColorAlpha(color, alpha) {
+    return w(color).alpha(alpha).toHex();
+}
+/**
+ * 颜色混合
+ * @param firstColor - 第一个颜色
+ * @param secondColor - 第二个颜色
+ * @param ratio - 第二个颜色占比
+ */
+function mixColor(firstColor, secondColor, ratio) {
+    return w(firstColor).mix(secondColor, ratio).toHex();
+}
+/**
+ * 获取颜色的 rgb 值
+ * @param color 颜色
+ */
+function getRgbOfColor(color) {
+    return w(color).toRgb();
+}
+/**
+ * 获取颜色的 hex 值
+ * @param color 颜色
+ */
+function getHexOfColor(color) {
+    return w(color).toHex();
+}
+
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
 function getDefaultExportFromCjs (x) {
@@ -7058,6 +7110,105 @@ function sortDate(date, type) {
     });
 }
 
+var fileType = {
+    PDF: ['.pdf'],
+    PPT: ['.ppt', '.pptx'],
+    WORD: ['.doc', '.docx'],
+    EXCEL: ['.xls', '.xlsx'],
+    VIDEO: ['.mp4', '.avi', '.mkv', '.flv', '.wmv'],
+    AUDIO: ['.mp3', '.wav', '.wma', '.aac', '.ogg'],
+    ARCHIVE: ['.zip', '.rar', '.7z', '.tar', '.gz'],
+    IMAGE: ['.jpg', '.png', '.jpeg', '.gif', '.bmp', '.svg'],
+};
+/**
+ * 获取文件后缀名
+ * @param name 文件名
+ * @returns 文件后缀名
+ */
+function getSuffix(name) {
+    var reg = /(?<=\.)[^.]+$/;
+    var target = name.match(reg);
+    return target ? target[0].toLowerCase() : '';
+}
+/**
+ * 获取文件类型
+ * @param name 文件名
+ * @returns 文件类型
+ */
+function getType(name) {
+    var suffix = getSuffix(name);
+    var entries = Object.entries(fileType);
+    for (var _i = 0, entries_1 = entries; _i < entries_1.length; _i++) {
+        var _a = entries_1[_i], type = _a[0], extensions = _a[1];
+        if (extensions.includes(suffix))
+            return type;
+        return undefined;
+    }
+}
+/**
+ * 获取文件大小
+ * @param size 文件大小 单位 B
+ * @param fix 保留小数位数 默认保留两位
+ * @returns 文件大小 单位 M
+ */
+function getFileSize(size, fix) {
+    if (fix === void 0) { fix = 2; }
+    return Number((size / 1024 / 1024).toFixed(fix));
+}
+
+function createLocalStorage() {
+    /** 默认缓存期限为 7天 */
+    var DEFAULT_CACHE_TIME = 60 * 60 * 24 * 7;
+    // 设置缓存
+    function set(key, value, expire) {
+        if (expire === void 0) { expire = DEFAULT_CACHE_TIME; }
+        var storageData = {
+            value: value,
+            expire: expire !== null ? new Date().getTime() + expire * 1000 : null,
+        };
+        var json = encrypto(storageData);
+        window.localStorage.setItem(key, json);
+    }
+    // 获取缓存
+    function get(key) {
+        var json = window.localStorage.getItem(key);
+        if (json) {
+            var storageData = null;
+            try {
+                storageData = decrypto(json);
+            }
+            catch (_a) {
+                // 防止解析失败
+            }
+            if (storageData) {
+                var value = storageData.value, expire = storageData.expire;
+                // 在有效期内直接返回
+                if (expire === null || expire >= Date.now()) {
+                    return value;
+                }
+            }
+            remove(key);
+            return null;
+        }
+        return null;
+    }
+    // 移除缓存
+    function remove(key) {
+        window.localStorage.removeItem(key);
+    }
+    // 清空缓存
+    function clear() {
+        window.localStorage.clear();
+    }
+    return {
+        set: set,
+        get: get,
+        remove: remove,
+        clear: clear,
+    };
+}
+var localStg = createLocalStorage();
+
 /**
  * 生成数字范围内的随机数
  * @param min 最小数字
@@ -7068,6 +7219,7 @@ function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+exports.addColorAlpha = addColorAlpha;
 exports.compareDate = compareDate;
 exports.decrypto = decrypto;
 exports.diffDate = diffDate;
@@ -7075,6 +7227,14 @@ exports.encrypto = encrypto;
 exports.formatDate = formatDate;
 exports.getAfterDate = getAfterDate;
 exports.getBeforeDate = getBeforeDate;
+exports.getBrowser = getBrowser;
 exports.getCurrentDate = getCurrentDate;
+exports.getFileSize = getFileSize;
+exports.getHexOfColor = getHexOfColor;
+exports.getRgbOfColor = getRgbOfColor;
+exports.getSuffix = getSuffix;
+exports.getType = getType;
+exports.localStg = localStg;
+exports.mixColor = mixColor;
 exports.random = random;
 exports.sortDate = sortDate;
