@@ -66,8 +66,6 @@ declare namespace kikyoUtils {
 	 * @param type - 排序类型
 	 */
 	export function sortDate(date: string[], type: string): string[]
-
-  
 }
 
 declare module 'kikyo-utils' {

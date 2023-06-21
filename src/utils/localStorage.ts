@@ -1,4 +1,4 @@
-import { Local } from '../typings/storage'
+import { Local } from '../../typings/storage'
 import { decrypto, encrypto } from './crypto'
 
 interface StorageData<T> {
