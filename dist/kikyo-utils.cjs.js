@@ -24,6 +24,8 @@ k([namesPlugin, mixPlugin]);
  * 给颜色加透明度
  * @param color - 颜色
  * @param alpha - 透明度 (0 - 1)
+ * @returns - 加上透明度的颜色
+ * @example addColorAlpha('#fff', 0.5) // => #ffffff80
  */
 function addColorAlpha(color, alpha) {
     return w(color).alpha(alpha).toHex();
@@ -33,6 +35,8 @@ function addColorAlpha(color, alpha) {
  * @param firstColor - 第一个颜色
  * @param secondColor - 第二个颜色
  * @param ratio - 第二个颜色占比
+ * @returns - 混合后的颜色
+ * @example mixColor('#fff', '#000', 0.5) // => #808080
  */
 function mixColor(firstColor, secondColor, ratio) {
     return w(firstColor).mix(secondColor, ratio).toHex();
@@ -40,6 +44,8 @@ function mixColor(firstColor, secondColor, ratio) {
 /**
  * 获取颜色的 rgb 值
  * @param color 颜色
+ * @returns - rgb 值
+ * @example getRgbOfColor('#fff') // => { r: 255, g: 255, b: 255 }
  */
 function getRgbOfColor(color) {
     return w(color).toRgb();
@@ -47,6 +53,8 @@ function getRgbOfColor(color) {
 /**
  * 获取颜色的 hex 值
  * @param color 颜色
+ * @returns - hex 值
+ * @example getHexOfColor('#fff') // => ffffff
  */
 function getHexOfColor(color) {
     return w(color).toHex();
@@ -7001,6 +7009,8 @@ var CryptoSecret = '__CryptoJS_Secret__';
 /**
  * 加密数据
  * @param data - 数据
+ * @returns - 密文
+ * @example encrypto({ name: '张三' }) // => 'U2FsdGVkX1+XQ2Z4QXJ5Qw=='
  */
 function encrypto(data) {
     var newData = JSON.stringify(data);
@@ -7009,6 +7019,8 @@ function encrypto(data) {
 /**
  * 解密数据
  * @param cipherText - 密文
+ * @returns - 数据
+ * @example decrypto('U2FsdGVkX1+XQ2Z4QXJ5Qw==') // => { name: '张三' }
  */
 function decrypto(cipherText) {
     var bytes = CryptoJS.AES.decrypt(cipherText, CryptoSecret);
@@ -7037,7 +7049,12 @@ var weekDay = {
     Saturday: '星期六',
     Sunday: '星期日',
 };
-// 格式化日期
+/**
+ * 格式化日期
+ * @param options 选项
+ * @returns 格式化后的日期
+ * @example formatDate({ date: '2020-01-01' }) // => '2020-01-01'
+ */
 function formatDate(options) {
     var date = options.date;
     var format = options.hms ? 'YYYY-MM-DD HH:mm:ss' : 'YYYY-MM-DD';
@@ -7045,7 +7062,19 @@ function formatDate(options) {
         throw new Error('date is required');
     return dayjs(date).format(format);
 }
-// 获取指定格式的日期
+/**
+ * 获取指定格式的日期
+ * @param type 日期类型
+ * @returns 指定格式的日期
+ * @example
+ * getCurrentDate('date') // => '2020-01-01'
+ * getCurrentDate('time') // => '00:00:00'
+ * getCurrentDate('datetime') // => '2020-01-01 00:00:00'
+ * getCurrentDate('year') // => '2020'
+ * getCurrentDate('month') // => '01'
+ * getCurrentDate('day') // => '01'
+ * getCurrentDate('week') // => '星期一'
+ */
 function getCurrentDate(type) {
     if (!type)
         throw new Error('type is required');
@@ -7061,7 +7090,15 @@ function getCurrentDate(type) {
     var date = dayjs().format(format[type]);
     return type === 'week' ? weekDay[date] : date;
 }
-// 获取之前的日期
+/**
+ * 获取之前的日期
+ * @param options 选项
+ * @returns 之前的日期
+ * @example
+ * getBeforeDate({ date: '2020-01-01', gap: 1, unit: 'day' }) // => '2019-12-31'
+ * getBeforeDate({ date: '2020-01-01', gap: 1, unit: 'month' }) // => '2019-12-01'
+ * getBeforeDate({ date: '2020-01-01', gap: 1, unit: 'year' }) // => '2019-01-01'
+ */
 function getBeforeDate(options) {
     var date = options.date, gap = options.gap, unit = options.unit;
     if (!date)
@@ -7070,7 +7107,15 @@ function getBeforeDate(options) {
         throw new Error('gap is required');
     return dayjs(date).subtract(gap, unit).format('YYYY-MM-DD');
 }
-// 获取之后的日期
+/**
+ * 获取之后的日期
+ * @param options 选项
+ * @returns 之后的日期
+ * @example
+ * getAfterDate({ date: '2020-01-01', gap: 1, unit: 'day' }) // => '2020-01-02'
+ * getAfterDate({ date: '2020-01-01', gap: 1, unit: 'month' }) // => '2020-02-01'
+ * getAfterDate({ date: '2020-01-01', gap: 1, unit: 'year' }) // => '2021-01-01'
+ */
 function getAfterDate(options) {
     var date = options.date, gap = options.gap, unit = options.unit;
     if (!date)
@@ -7079,7 +7124,13 @@ function getAfterDate(options) {
         throw new Error('gap is required');
     return dayjs(date).add(gap, unit).format('YYYY-MM-DD');
 }
-// 判断两个时间段大小 date1 > date2 ? true : false
+/**
+ * 判断两个时间段大小
+ * @param date1 日期 1
+ * @param date2 日期 2
+ * @returns 日期 1 是否大于日期 2
+ * @example compareDate('2020-01-01', '2020-01-02') // => false
+ */
 function compareDate(date1, date2) {
     if (!date1)
         throw new Error('date1 is required');
@@ -7087,7 +7138,14 @@ function compareDate(date1, date2) {
         throw new Error('date2 is required');
     return dayjs(date1).isAfter(date2);
 }
-// 计算两个日期之差
+/**
+ * 计算两个日期之差
+ * @param date1 日期 1
+ * @param date2 日期 2
+ * @param options 选项
+ * @returns 两个日期之差
+ * @example diffDate('2020-01-01', '2020-01-02', { unit: 'day' }) // => 1
+ */
 function diffDate(date1, date2, options) {
     var _a = options.unit, unit = _a === void 0 ? 'month' : _a, _b = options.abs, abs = _b === void 0 ? true : _b, _c = options.int, int = _c === void 0 ? true : _c;
     if (!date1)
@@ -7099,7 +7157,13 @@ function diffDate(date1, date2, options) {
     var cycle = diff > 0 ? diff : diff + 1;
     return abs ? Math.ceil(Math.abs(cycle)) : cycle;
 }
-// 时间排序 min 从小到大 max 从大到小
+/**
+ * 时间排序
+ * @param date 日期数组
+ * @param type 排序类型 min 从小到大 max 从大到小
+ * @returns 排序后的日期数组
+ * @example sortDate(['2020-01-01', '2020-01-02', '2020-01-03']) // => ['2020-01-01', '2020-01-02', '2020-01-03']
+ */
 function sortDate(date, type) {
     if (type === void 0) { type = 'min'; }
     if (!date || date.length == 0)
@@ -7109,6 +7173,42 @@ function sortDate(date, type) {
         return dayjs(a)[method](b) ? 1 : -1;
     });
 }
+
+/**
+ * 动态加载 js 脚本文件
+ * @param url js 文件地址
+ * @returns Promise 对象
+ * @example loadJs('https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js').then(() => {}).catch(() => {})
+ */
+var loadJs = function (url) {
+    return new Promise(function (resolve, reject) {
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        // 监听 script 加载状态改变的事件
+        if (script.readyState) {
+            script.onreadystatechange = function () {
+                if (script.readyState === 'loaded' || script.readyState === 'complete') {
+                    handleLoad();
+                }
+            };
+        }
+        else {
+            script.onload = handleLoad;
+        }
+        // 处理加载成功的回调
+        function handleLoad() {
+            script.onreadystatechange = null;
+            resolve();
+        }
+        // 监听 script 加载失败事件
+        script.onerror = function () {
+            reject();
+        };
+        // 指定 js 文件地址并添加到 document 中
+        script.src = url;
+        document.body.appendChild(script);
+    });
+};
 
 var fileType = {
     PDF: ['.pdf'],
@@ -7124,6 +7224,7 @@ var fileType = {
  * 获取文件后缀名
  * @param name 文件名
  * @returns 文件后缀名
+ * @example getSuffix('test.jpg') // => 'jpg'
  */
 function getSuffix(name) {
     var reg = /(?<=\.)[^.]+$/;
@@ -7134,6 +7235,7 @@ function getSuffix(name) {
  * 获取文件类型
  * @param name 文件名
  * @returns 文件类型
+ * @example getType('test.jpg') // => 'IMAGE'
  */
 function getType(name) {
     var suffix = getSuffix(name);
@@ -7150,6 +7252,7 @@ function getType(name) {
  * @param size 文件大小 单位 B
  * @param fix 保留小数位数 默认保留两位
  * @returns 文件大小 单位 M
+ * @example getFileSize(1024) // => 0.00
  */
 function getFileSize(size, fix) {
     if (fix === void 0) { fix = 2; }
@@ -7214,6 +7317,7 @@ var localStg = createLocalStorage();
  * @param min 最小数字
  * @param max 最大数字
  * @returns number类型
+ * @example random(1, 10) // => 5
  */
 function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -7234,6 +7338,7 @@ exports.getHexOfColor = getHexOfColor;
 exports.getRgbOfColor = getRgbOfColor;
 exports.getSuffix = getSuffix;
 exports.getType = getType;
+exports.loadJs = loadJs;
 exports.localStg = localStg;
 exports.mixColor = mixColor;
 exports.random = random;

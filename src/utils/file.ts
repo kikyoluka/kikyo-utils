@@ -19,6 +19,7 @@ const fileType: FileMap = {
  * 获取文件后缀名
  * @param name 文件名
  * @returns 文件后缀名
+ * @example getSuffix('test.jpg') // => 'jpg'
  */
 export function getSuffix(name: string): string {
 	const reg = /(?<=\.)[^.]+$/
@@ -31,6 +32,7 @@ export function getSuffix(name: string): string {
  * 获取文件类型
  * @param name 文件名
  * @returns 文件类型
+ * @example getType('test.jpg') // => 'IMAGE'
  */
 export function getType(name: string): FileClass | undefined {
 	const suffix = getSuffix(name)
@@ -47,6 +49,7 @@ export function getType(name: string): FileClass | undefined {
  * @param size 文件大小 单位 B
  * @param fix 保留小数位数 默认保留两位
  * @returns 文件大小 单位 M
+ * @example getFileSize(1024) // => 0.00
  */
 export function getFileSize(size: number, fix: number = 2): number {
 	return Number((size / 1024 / 1024).toFixed(fix))
