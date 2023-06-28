@@ -48,7 +48,7 @@ export function getType(name: string): FileClass | undefined {
  * 获取文件大小
  * @param size 文件大小 单位 B
  * @param fix 保留小数位数 默认保留两位
- * @returns 文件大小 单位 M
+ * @returns 文件大小 单位 MB
  * @example getFileSize(1024) // => 0.00
  */
 export function getFileSize(size: number, fix: number = 2): number {
